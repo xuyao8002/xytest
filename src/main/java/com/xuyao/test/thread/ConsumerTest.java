@@ -1,11 +1,8 @@
-package com.xuyao.test;
+package com.xuyao.test.thread;
 
 import java.util.LinkedList;
-import java.util.List;
 
-/**
- * Created by xuyao on 2017/6/27.
- */
+
 public class ConsumerTest extends Thread{
     public static void main(String[] args){
 

@@ -1,11 +1,8 @@
-package com.xuyao.test;
+package com.xuyao.test.thread;
 
 import java.util.LinkedList;
 import java.util.Random;
 
-/**
- * Created by xuyao on 2017/6/27.
- */
 public class ProducerTest extends Thread{
     public static LinkedList<Integer> list = new LinkedList<Integer>();
     static int size = 5;

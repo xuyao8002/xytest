@@ -1,8 +1,5 @@
-package com.xuyao.test;
+package com.xuyao.test.thread;
 
-/**
- * Created by xuyao on 2017/6/27.
- */
 public class PCTest {
     public static void main(String[] args){
         ProducerTest pt = new ProducerTest();
