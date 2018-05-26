@@ -19,8 +19,9 @@ public class SemaphoreTest {
                         semaphore.acquire();
                         System.out.println(Thread.currentThread().getName() + ": start");
                         Thread.sleep(1000L);
-                        semaphore.release();
                         System.out.println(Thread.currentThread().getName() + ": end");
+                        semaphore.release();
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
