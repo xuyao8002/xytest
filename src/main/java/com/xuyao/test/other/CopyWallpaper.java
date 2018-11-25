@@ -11,8 +11,8 @@ import java.nio.channels.FileChannel;
 public class CopyWallpaper {
 
     public static void main(String[] args) throws IOException {
-        String path = "C:\\Users\\xxx\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets";
-        String output = "C:\\Users\\xxx\\Desktop";
+        String path = "C:\\Users\\xuyao\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets";
+        String output = "C:\\Users\\xuyao\\Desktop";
         File folder = new File(path);
         if(folder.isDirectory()){
             File[] files = folder.listFiles();
