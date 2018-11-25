@@ -1,4 +1,4 @@
-package com.xuyao.test;
+package com.xuyao.test.proxy;
 
 public interface ISayService {
 

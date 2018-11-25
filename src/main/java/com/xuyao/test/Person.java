@@ -2,12 +2,14 @@ package com.xuyao.test;
 
 import com.xuyao.test.annotation.TestAnno;
 
-public class Person {
+import java.io.Serializable;
 
+public class Person implements Serializable {
+
+    private static final long serialVersionUID = -8815168358655024061L;
     private String name;
 
     private Integer age;
-
     private String hobby;
 
     //@JSONField(name = "nima")
