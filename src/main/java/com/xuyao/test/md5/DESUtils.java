@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.xuyao.test.md5;
 
 
 import org.apache.commons.codec.binary.Base64;
@@ -36,7 +36,7 @@ public class DESUtils {
             e1.printStackTrace();
         }catch(javax.crypto.NoSuchPaddingException e2){
             e2.printStackTrace();
-        }catch(java.lang.Exception e3){
+        }catch(Exception e3){
             e3.printStackTrace();
         }
         return null;
@@ -59,7 +59,7 @@ public class DESUtils {
             e1.printStackTrace();
         }catch(javax.crypto.NoSuchPaddingException e2){
             e2.printStackTrace();
-        }catch(java.lang.Exception e3){
+        }catch(Exception e3){
             e3.printStackTrace();
         }
         return null;

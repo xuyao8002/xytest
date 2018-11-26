@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.xuyao.test.sql;
 
 import java.sql.*;
 

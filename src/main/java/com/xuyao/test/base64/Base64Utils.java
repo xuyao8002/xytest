@@ -5,7 +5,7 @@ import sun.misc.BASE64Encoder;
 
 import java.util.Base64;
 
-public class MyTest {
+public class Base64Utils {
 
     private static String str = "Hello, World!";
     private static final String CHARSET = "UTF-8";
@@ -27,6 +27,13 @@ public class MyTest {
     public static String encode1(String str) throws Exception {
         Base64.Encoder encoder = Base64.getEncoder();
         String en = encoder.encodeToString(str.getBytes(CHARSET));
+        System.out.println(en);
+        return en;
+    }
+
+    public static String encode1(byte[] bytes) {
+        Base64.Encoder encoder = Base64.getEncoder();
+        String en = encoder.encodeToString(bytes);
         System.out.println(en);
         return en;
     }
