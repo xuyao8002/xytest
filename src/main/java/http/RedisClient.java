@@ -11,11 +11,11 @@ public class RedisClient {
 
     private OutputStream outputStream;
 
-    private static final String HOST = "111.231.89.17";
+    private static final String HOST = "";
 
     private static final int PORT = 6379;
 
-    private static final String PASSWORD = "9k#KL^%ll88>>$$<.34,";
+    private static final String PASSWORD = "";
 
 
     public RedisClient(String host, int port) throws IOException {
