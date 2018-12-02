@@ -1,7 +1,5 @@
 package com.xuyao.test.md5;
 
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
@@ -10,10 +8,6 @@ public class MyTest extends Thread {
 
     public static void main(String[] args) throws Exception {
         String str = "admin";
-        Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-        System.out.println(encoder.encodePassword(str, null));
-
-
         MessageDigest md = MessageDigest.getInstance("MD5");
         // 计算md5函数
         md.update(str.getBytes());
