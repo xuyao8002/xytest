@@ -1,4 +1,4 @@
-package http;
+package com.xuyao.test.http.socket;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -7,7 +7,7 @@ import java.net.Socket;
 public class SocketServer {
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(9527);
+        ServerSocket serverSocket = new ServerSocket(8080);
         System.out.println("服务端准备好了");
         while(true){
             Socket accept = serverSocket.accept();

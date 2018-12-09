@@ -1,4 +1,4 @@
-package http;
+package com.xuyao.test.http.socket;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package http;
+package com.xuyao.test.http.socket;
 
 import java.io.*;
 import java.net.Socket;
@@ -13,7 +13,7 @@ public class SocketClient {
         System.out.println("客户端准备好了");
         boolean exitFlag = false;
         while (true) {
-            socket = new Socket("localhost", 9527);
+            socket = new Socket("localhost", 8080);
             outputStream = new DataOutputStream(socket.getOutputStream());
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
