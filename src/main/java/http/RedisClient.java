@@ -17,6 +17,8 @@ public class RedisClient {
 
     private static final String PASSWORD = "";
 
+    private static final String LF_CR = "\r\n";
+
 
     public RedisClient(String host, int port) throws IOException {
         Socket socket = new Socket(host, port);
@@ -26,13 +28,13 @@ public class RedisClient {
 
     public void set(String key, String value) throws IOException {
         StringBuilder builder = new StringBuilder();
-        builder.append("*3").append("\r\n");
-        builder.append("$3").append("\r\n");
-        builder.append("SET").append("\r\n");
-        builder.append("$").append(key.getBytes().length).append("\r\n");
-        builder.append(key).append("\r\n");
-        builder.append("$").append(value.getBytes().length).append("\r\n");
-        builder.append(value).append("\r\n");
+        builder.append("*3").append(LF_CR);
+        builder.append("$3").append(LF_CR);
+        builder.append("SET").append(LF_CR);
+        builder.append("$").append(key.getBytes().length).append(LF_CR);
+        builder.append(key).append(LF_CR);
+        builder.append("$").append(value.getBytes().length).append(LF_CR);
+        builder.append(value).append(LF_CR);
 
         byte[] response = response(builder.toString().getBytes());
         System.out.println("set响应：" + new String(response));
@@ -41,11 +43,11 @@ public class RedisClient {
 
     public void get(String key) throws IOException {
         StringBuilder builder = new StringBuilder();
-        builder.append("*2").append("\r\n");
-        builder.append("$3").append("\r\n");
-        builder.append("GET").append("\r\n");
-        builder.append("$").append(key.getBytes().length).append("\r\n");
-        builder.append(key).append("\r\n");
+        builder.append("*2").append(LF_CR);
+        builder.append("$3").append(LF_CR);
+        builder.append("GET").append(LF_CR);
+        builder.append("$").append(key.getBytes().length).append(LF_CR);
+        builder.append(key).append(LF_CR);
 
         byte[] response = response(builder.toString().getBytes());
         System.out.println("get响应：" + new String(response));
@@ -54,11 +56,11 @@ public class RedisClient {
 
     public void auth(String password) throws IOException {
         StringBuilder builder = new StringBuilder();
-        builder.append("*2").append("\r\n");
-        builder.append("$4").append("\r\n");
-        builder.append("AUTH").append("\r\n");
-        builder.append("$").append(password.getBytes().length).append("\r\n");
-        builder.append(password).append("\r\n");
+        builder.append("*2").append(LF_CR);
+        builder.append("$4").append(LF_CR);
+        builder.append("AUTH").append(LF_CR);
+        builder.append("$").append(password.getBytes().length).append(LF_CR);
+        builder.append(password).append(LF_CR);
 
         byte[] response = response(builder.toString().getBytes());
         System.out.println("auth响应：" + new String(response));
