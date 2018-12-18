@@ -28,9 +28,23 @@ public class ByteBufferTest {
         //指定位置包装数组
         buffer = ByteBuffer.wrap(array, 5, 5);
 
-        array[5] =  'A';
+        array[5] =  'a';
 
         System.out.println(Arrays.toString(buffer.array()));
+
+        buffer = ByteBuffer.allocate(10);
+        //position:0 limit:10 capacity:10
+        buffer.put("hello".getBytes());
+        //position:5 limit:10 capacity:10
+        System.out.println(buffer + "，" + new String(buffer.array()));
+        buffer.flip();
+        //position:0 limit:5 capacity:10
+        System.out.println(buffer + ", " + (char)buffer.get());
+        //position:1 limit:5 capacity:10
+        buffer.rewind();
+        //position:0 limit:5 capacity:10
+        System.out.println(buffer + ", " + (char)buffer.get());
+
     }
 
 }
