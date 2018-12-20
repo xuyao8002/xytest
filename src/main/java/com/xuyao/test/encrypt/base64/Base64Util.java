@@ -1,13 +1,10 @@
-package com.xuyao.test.base64;
+package com.xuyao.test.encrypt.base64;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-import java.util.Base64;
+public class Base64Util {
 
-public class Base64Utils {
-
-    private static String str = "Hello, World!";
     private static final String CHARSET = "UTF-8";
     public static String encode(String str) throws Exception {
         BASE64Encoder encoder = new BASE64Encoder();
@@ -25,14 +22,14 @@ public class Base64Utils {
 
     //1.8
     public static String encode1(String str) throws Exception {
-        Base64.Encoder encoder = Base64.getEncoder();
+        java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
         String en = encoder.encodeToString(str.getBytes(CHARSET));
         System.out.println(en);
         return en;
     }
 
     public static String encode1(byte[] bytes) {
-        Base64.Encoder encoder = Base64.getEncoder();
+        java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
         String en = encoder.encodeToString(bytes);
         System.out.println(en);
         return en;
@@ -40,7 +37,7 @@ public class Base64Utils {
 
     //1.8
     public static String decode1(String str) throws Exception {
-        Base64.Decoder decoder = Base64.getDecoder();
+        java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
         String de = new String(decoder.decode(str), CHARSET);
         System.out.println(de);
         return de;
@@ -60,18 +57,4 @@ public class Base64Utils {
         return de;
     }
 
-    public static void main(String[] args) throws Exception {
-//        encode(str);
-        long b = System.currentTimeMillis();
-        decode(encode(str));
-        System.out.println(System.currentTimeMillis() - b);
-
-        b = System.currentTimeMillis();
-        decode1(encode1(str));
-        System.out.println(System.currentTimeMillis() - b);
-
-        b = System.currentTimeMillis();
-        decode2(encode2(str));
-        System.out.println(System.currentTimeMillis() - b);
-    }
 }

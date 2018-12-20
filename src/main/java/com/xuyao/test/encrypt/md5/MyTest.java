@@ -1,4 +1,4 @@
-package com.xuyao.test.md5;
+package com.xuyao.test.encrypt.md5;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
