@@ -1,5 +1,11 @@
 package com.xuyao.test.encrypt.hash;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.Charset;
+
 public class HashUtil {
 
     private static int prime = 0x8765fed1;
@@ -114,7 +120,7 @@ public class HashUtil {
         int OneEighth = BitsInUnsignedInt / 8;
         int HighBits = 0xFFFFFFFF << (BitsInUnsignedInt - OneEighth);
         int hash = 0;
-        int test = 0;
+        int test;
         for (int i = 0; i < str.length(); i++) {
             hash = (hash << OneEighth) + str.charAt(i);
 
@@ -130,7 +136,7 @@ public class HashUtil {
      */
     public static int ELFHash(String str) {
         int hash = 0;
-        int x = 0;
+        int x;
         for (int i = 0; i < str.length(); i++) {
             hash = (hash << 4) + str.charAt(i);
             if ((x = (int) (hash & 0xF0000000L)) != 0) {
@@ -217,4 +223,16 @@ public class HashUtil {
         hash |= FNVHash1(str);
         return hash;
     }
+
+    /**
+     * murmurHash 随机分布性较好
+     * @param str
+     * @return
+     */
+    public static int murmurHash(String str){
+        HashFunction function = Hashing.murmur3_32();
+        HashCode hc = function.hashString(str, Charset.forName("UTF-8"));
+        return hc.asInt();
+    }
+
 }
