@@ -13,6 +13,8 @@ public class GuavaBloomFilter {
 
     private static long start;
 
+    private static long startMemory;
+
     public static void main(String[] args) {
 //        test();
         test1();
@@ -20,7 +22,8 @@ public class GuavaBloomFilter {
 
     public static void test(){
         start = System.currentTimeMillis();
-        BloomFilter<Integer> filter = BloomFilter.create(Funnels.integerFunnel(), count, 0.01);
+        startMemory = Runtime.getRuntime().totalMemory();
+        BloomFilter<Integer> filter = BloomFilter.create(Funnels.integerFunnel(), count, 0.0001);
         for (int i = 0; i < count; i++) {
             filter.put(i);
         }
@@ -28,11 +31,13 @@ public class GuavaBloomFilter {
         System.out.println(filter.mightContain(10000));
         System.out.println(filter.mightContain(1000000));
         System.out.println(filter.mightContain(10000000));
+        System.out.println(Runtime.getRuntime().totalMemory() - startMemory);
         System.out.println(System.currentTimeMillis() - start);
     }
 
     public static void test1(){
         start = System.currentTimeMillis();
+        startMemory = Runtime.getRuntime().totalMemory();
         BloomFilter<String> filter = BloomFilter.create(new Funnel<String>() {
             @Override
             public void funnel(String s, PrimitiveSink primitiveSink) {
@@ -46,6 +51,7 @@ public class GuavaBloomFilter {
         System.out.println(filter.mightContain("xy10000"));
         System.out.println(filter.mightContain("xy1000000"));
         System.out.println(filter.mightContain("xy10000000"));
+        System.out.println(Runtime.getRuntime().totalMemory() - startMemory);
         System.out.println(System.currentTimeMillis() - start);
     }
 }

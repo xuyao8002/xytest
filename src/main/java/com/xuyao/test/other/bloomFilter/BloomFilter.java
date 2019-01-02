@@ -6,12 +6,11 @@ import java.util.BitSet;
 
 public class BloomFilter {
 
-    private static int size = 100000000;
-    private static int[] array = new int[size];
+    private static int size = 10000000;
+//    private static int[] array = new int[size];
     private static BitSet bitSet = new BitSet(size);
 
     public static void main(String[] args) {
-
         long start = System.currentTimeMillis();
         long startM = Runtime.getRuntime().totalMemory();
         for (int i = 0; i < size; i++) {
