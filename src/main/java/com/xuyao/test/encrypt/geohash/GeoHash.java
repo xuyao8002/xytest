@@ -3,6 +3,9 @@ package com.xuyao.test.encrypt.geohash;
 import java.util.BitSet;
 import java.util.HashMap;
 
+/**
+ *  将经纬度转换为可排序、可比较的字符串，代表一个区域
+ */
 public class GeoHash {
     private static int numbits = 6 * 5;
     final static char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7',
