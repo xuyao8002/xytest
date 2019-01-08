@@ -1,9 +1,12 @@
 package com.xuyao.test.io.nio;
 
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
@@ -19,7 +22,8 @@ public class MappedByteBufferTest {
 //        MappedTest();
 //        System.out.println(0x8FFFFFF);
 //        readWriteTest();
-        privateTest();
+//        privateTest();
+        write();
         long end = System.currentTimeMillis();
         System.out.println("cost: " + (end - start));
 
@@ -35,7 +39,9 @@ public class MappedByteBufferTest {
 
     public static void test(FileChannel.MapMode mapMode, String file) {
         try {
-            FileChannel channel = FileChannel.open(Paths.get(file), StandardOpenOption.READ, StandardOpenOption.WRITE);
+            Path path = Paths.get(file);
+            if (!Files.exists(path)) Files.createFile(path);
+            FileChannel channel = FileChannel.open(path, StandardOpenOption.READ, StandardOpenOption.WRITE);
             MappedByteBuffer mapBuffer = channel.map(mapMode, 0, length);
             for (int i = 0; i < length; i++) {
                 mapBuffer.put((byte) 0);
@@ -58,7 +64,6 @@ public class MappedByteBufferTest {
         MappedByteBuffer map = readChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileSize);
 
         File file = new File(file1);
-        if (!file.exists()) file.createNewFile();
         RandomAccessFile writeFile = new RandomAccessFile(file, "rw");
         FileChannel writeChannel = writeFile.getChannel();
         MappedByteBuffer map1 = writeChannel.map(FileChannel.MapMode.READ_WRITE, 0, fileSize);
@@ -100,4 +105,16 @@ public class MappedByteBufferTest {
         }
         System.out.println("end");
     }
+
+    public static void write() throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("D:\\bigFile.txt"));
+        for (int i = 0; i < 1000000; i++) {
+            bufferedWriter.write("1832" + String.format("%07d", i));
+            bufferedWriter.write("\r\n");
+
+        }
+        bufferedWriter.close();
+        System.out.println("wirte finished");
+    }
+
 }
