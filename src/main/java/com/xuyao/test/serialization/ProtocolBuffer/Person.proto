@@ -1,0 +1,19 @@
+//指定版本号,"proto2"、"proto3"
+syntax = "proto2";
+//生成的java文件所在包
+package com.xuyao.test.serialization.ProtocolBuffer;
+
+//生成的java文件名
+option java_outer_classname = "PersonBean";
+
+message Person{
+    //必须字段
+    required string name = 1;
+    required int32 age = 2;
+    //可选字段
+    optional string hobby = 3;
+}
+
+//protoc.exe -I=xxx\xytest\src\main\java\com\xuyao\test\serialization\ProtocolBuffer --java_out=xxx\xytest\src\main\java Person.proto
+//protoc.exe(windows)/protoc(linux) -I=proto所在目录 --java_out=生成java文件所在目录，一般是package的上层 proto文件名
+//protoc.exe或protoc文件去官网下载对应系统zip包，protoc-x.x.x-(linux-x86_xx/win32).zip
