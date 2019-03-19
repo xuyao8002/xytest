@@ -7,7 +7,9 @@ import java.util.concurrent.Executors;
 
 public class CyclicBarrierTest {
     public static void main(String[] args) {
-        CyclicBarrier barrier = new CyclicBarrier(9);
+        CyclicBarrier barrier = new CyclicBarrier(9, () ->{
+            System.out.println("-^_^-"); //最后一个线程执行完await后触发
+        });
         ExecutorService executorService = Executors.newFixedThreadPool(9);
         for(int i = 0; i < 9; i++){
             final int j = i;
@@ -17,7 +19,6 @@ public class CyclicBarrierTest {
                     try {
                         System.out.println(j);
                         barrier.await();
-                        System.out.println("ok " + j);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (BrokenBarrierException e) {
@@ -28,6 +29,6 @@ public class CyclicBarrierTest {
 
         }
         executorService.shutdown();
-        //System.out.println("召唤");
+        System.out.println("-0.0-");
     }
 }
