@@ -1,11 +1,11 @@
-package com.xuyao.test.bytecode;
+package com.xuyao.test.bytecode.javassist;
 
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 
-public class JavassistTest {
+public class Test {
 
     public static void main(String[] args) throws Exception {
         ClassPool pool = ClassPool.getDefault();
