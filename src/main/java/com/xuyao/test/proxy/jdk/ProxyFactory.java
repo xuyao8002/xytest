@@ -1,5 +1,7 @@
-package com.xuyao.test.proxy;
+package com.xuyao.test.proxy.jdk;
 
+
+import org.apache.poi.ss.formula.functions.T;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -7,13 +9,13 @@ import java.lang.reflect.Proxy;
 
 public class ProxyFactory {
 
-    private Object target;
-    public ProxyFactory(Object target){
-        this.target=target;
-    }
+//    private Object target;
+//    public ProxyFactory(Object target){
+//        this.target=target;
+//    }
 
-    public Object getProxyInstance(){
-        return Proxy.newProxyInstance(
+    public static <T> T getProxyInstance(T target){
+        return (T) Proxy.newProxyInstance(
                 target.getClass().getClassLoader(),
                 target.getClass().getInterfaces(),
                 new InvocationHandler() {
