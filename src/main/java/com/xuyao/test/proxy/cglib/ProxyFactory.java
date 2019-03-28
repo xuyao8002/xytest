@@ -8,14 +8,14 @@ import java.lang.reflect.Method;
 
 public class ProxyFactory {
 
-    public static <T> T getProxyInstance(Class<T> clazz){
+    public static <T> T getProxyInstance(T target){
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(clazz);
+        enhancer.setSuperclass(target.getClass());
         enhancer.setCallback(new MethodInterceptor() {
             @Override
             public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
                 System.out.println("before " + method.getName());
-                Object invoke = methodProxy.invokeSuper(o, objects);
+                Object invoke = methodProxy.invoke(target, objects);
                 System.out.println("after " + method.getName());
                 return invoke;
             }
