@@ -1,10 +1,8 @@
-package com.xuyao.test.other.beanMapConvert;
+package com.xuyao.test.other.convert;
 
 import com.google.common.collect.Lists;
 import net.sf.cglib.beans.BeanMap;
 
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
