@@ -51,10 +51,10 @@ public class ReflectUtils {
 
     private static void changeAnnoVal(String key, String newVal, Annotation annotation) throws NoSuchFieldException, IllegalAccessException {
         InvocationHandler h = Proxy.getInvocationHandler(annotation);
-        Field hField = h.getClass().getDeclaredField("memberValues");
-        hField.setAccessible(true);
-        Map memberValues = (Map) hField.get(h);
-        memberValues.put(key, newVal);
+        Field memberValues = h.getClass().getDeclaredField("memberValues");
+        memberValues.setAccessible(true);
+        Map memberValuesMap = (Map) memberValues.get(h);
+        memberValuesMap.put(key, newVal);
     }
 
 
