@@ -1,6 +1,7 @@
 package com.xuyao.test.other.convert;
 
 import com.google.common.collect.Lists;
+import net.sf.cglib.beans.BeanCopier;
 import net.sf.cglib.beans.BeanMap;
 
 import java.util.List;
@@ -42,6 +43,11 @@ public class BeanMapUtils {
             }
         }
         return list;
+    }
+
+    public static <S,T> void beanCopy(S source, T target){
+        BeanCopier copier = BeanCopier.create(source.getClass(), target.getClass(), false);
+        copier.copy(source, target, null);
     }
 
 }
