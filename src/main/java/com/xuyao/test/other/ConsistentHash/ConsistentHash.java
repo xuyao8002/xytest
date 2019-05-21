@@ -5,40 +5,79 @@ import java.util.TreeMap;
 
 public class ConsistentHash {
 
+    /**
+     * 虚拟节点数量
+     */
     private int virtualNodeNums;
 
-    private static TreeMap<Integer, String> treeMap;
+    /**
+     * 节点hash-节点
+     */
+    private static TreeMap<Integer, String> hashNodeMap;
 
-    private String[] ips;
+    /**
+     * 节点信息
+     */
+    private String[] nodes;
 
-    private ConsistentHash(String[] ips, int virtualNodeNums) {
-        this.ips = ips;
+    /**
+     * 虚拟节点分隔符
+     */
+    private static final String VIRTUAL_NODE_SEPARATOR = "##";
+
+    /**
+     * 虚拟节点别名
+     */
+    private static final String VIRTUAL_NODE_ALIAS = "VN";
+
+    /**
+     * 虚拟节点默认数量
+     */
+    private static final int DEFAULT_VIRTUAL_NODE_NUMS = 10;
+
+    private ConsistentHash(String[] nodes, int virtualNodeNums) {
+        this.nodes = nodes;
         this.virtualNodeNums = virtualNodeNums;
     }
 
-    public static ConsistentHash getInstance(String[] ips, int virtualNodeNums){
-        if(ips == null || ips.length == 0){
-            throw new IllegalArgumentException("ips不能为空");
+    public static ConsistentHash getInstance(String[] nodes, int virtualNodeNums){
+        if(nodes == null || nodes.length == 0){
+            throw new IllegalArgumentException("nodes不能为空");
         }
-        if(virtualNodeNums < 0){
+        if(virtualNodeNums <= 0){
             throw new IllegalArgumentException("virtualNodeNums必须大于0");
         }
-        ConsistentHash consistentHash = new ConsistentHash(ips, virtualNodeNums);
-        treeMap = new TreeMap<>();
-        int length = ips.length;
+        return getConsistentHash(nodes, virtualNodeNums);
+    }
+
+    public static ConsistentHash getInstance(String[] nodes){
+        if(nodes == null || nodes.length == 0){
+            throw new IllegalArgumentException("nodes不能为空");
+        }
+        int virtualNodeNums = DEFAULT_VIRTUAL_NODE_NUMS;
+        return getConsistentHash(nodes, virtualNodeNums);
+    }
+
+    private static ConsistentHash getConsistentHash(String[] nodes, int virtualNodeNums) {
+        ConsistentHash consistentHash = new ConsistentHash(nodes, virtualNodeNums);
+        hashNodeMap = new TreeMap<>();
+        int length = nodes.length;
         for (int i = 0; i < length; i++) {
-            treeMap.put(hash(ips[i]), ips[i]);
+            hashNodeMap.put(hash(nodes[i]), nodes[i]);
+            for (int v = 0; v < virtualNodeNums; v++) {
+                hashNodeMap.put(hash(nodes[i] + VIRTUAL_NODE_SEPARATOR + VIRTUAL_NODE_ALIAS + v), nodes[i]);
+            }
         }
         return consistentHash;
     }
 
     public String getNode(String key){
-        int i = hash(key);
-        SortedMap<Integer, String> tailMap = treeMap.tailMap(i);
+        int from = hash(key);
+        SortedMap<Integer, String> tailMap = hashNodeMap.tailMap(from);
         if(tailMap.isEmpty()){
-            tailMap = treeMap.tailMap(0);
+            tailMap = hashNodeMap.tailMap(0);
         }
-        return treeMap.get(tailMap.firstKey());
+        return hashNodeMap.get(tailMap.firstKey()).split(VIRTUAL_NODE_SEPARATOR)[0];
     }
 
     private static int hash(String key) {
@@ -51,10 +90,14 @@ public class ConsistentHash {
         hash += (hash << 3);
         hash ^= (hash >> 11);
         hash += (hash << 15);
-        if(hash < 0){
-            hash = -hash;
-        }
-        return hash;
+        return hash & 0x7FFFFFFF;
     }
 
+    public int getVirtualNodeNums() {
+        return virtualNodeNums;
+    }
+
+    public String[] getNodes() {
+        return nodes;
+    }
 }
