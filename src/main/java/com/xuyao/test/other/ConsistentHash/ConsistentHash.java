@@ -77,7 +77,7 @@ public class ConsistentHash {
         if(tailMap.isEmpty()){
             tailMap = hashNodeMap.tailMap(0);
         }
-        return hashNodeMap.get(tailMap.firstKey()).split(VIRTUAL_NODE_SEPARATOR)[0];
+        return hashNodeMap.get(tailMap.firstKey());
     }
 
     private static int hash(String key) {
