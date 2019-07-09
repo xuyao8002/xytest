@@ -1,5 +1,7 @@
 package com.xuyao.test.regex;
 
+import sun.awt.Symbol;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +13,9 @@ public class RegexUtils {
     //9位整数，最多4位小数
     String pattern = "^\\d{1,9}(\\.\\d{1,4})?$";
 
+    //键盘上特殊符号
+    public static String symbol = "[`~!@#$%^&*()_\\\\\\-+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+
     public static String getChinese(String cellValue){
         String regex = "[\\u4e00-\\u9fa5]+";
         Pattern pattern = Pattern.compile(regex);
@@ -20,4 +25,5 @@ public class RegexUtils {
         }
         return cellValue;
     }
+
 }
