@@ -24,4 +24,20 @@ public class RegexUtils {
         return cellValue;
     }
 
+    /**
+     * 获取文本内中文、字母、数字
+     * @param cellValue
+     * @return
+     */
+    public static String getContentWithoutSymbol(String cellValue){
+        String regex = "[\\u4e00-\\u9fa50-9A-Za-z]+";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cellValue);
+        String result = "";
+        while (matcher.find()) {
+            result += matcher.group(0);
+        }
+        return result;
+    }
+
 }
