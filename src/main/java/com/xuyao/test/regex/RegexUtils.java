@@ -1,7 +1,5 @@
 package com.xuyao.test.regex;
 
-import sun.awt.Symbol;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
