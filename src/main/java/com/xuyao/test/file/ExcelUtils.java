@@ -2,10 +2,7 @@ package com.xuyao.test.file;
 
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -14,6 +11,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ExcelUtils {
 
@@ -106,6 +104,60 @@ public class ExcelUtils {
                 break;
         }
         return cellValue;
+    }
+
+    public static void copyRow(Sheet srcSheet, Sheet destSheet, Row srcRow, Row destRow, Map<Integer, CellStyle> styleMap) {
+        destRow.setHeight(srcRow.getHeight());
+        for (int j = srcRow.getFirstCellNum(); j <= srcRow.getLastCellNum(); j++) {
+            Cell oldCell = srcRow.getCell(j);
+            Cell newCell = destRow.getCell(j);
+            if (oldCell != null) {
+                if (newCell == null) {
+                    newCell = destRow.createCell(j);
+                }
+                copyCell(oldCell, newCell, styleMap);
+            }
+        }
+    }
+
+    public static void copyCell(Cell oldCell, Cell newCell, Map<Integer, CellStyle> styleMap) {
+        if (styleMap != null) {
+            if (oldCell.getSheet().getWorkbook() == newCell.getSheet().getWorkbook()) {
+                newCell.setCellStyle(oldCell.getCellStyle());
+            } else {
+                int stHashCode = oldCell.getCellStyle().hashCode();
+                CellStyle newCellStyle = styleMap.get(stHashCode);
+                if (newCellStyle == null) {
+                    newCellStyle = newCell.getSheet().getWorkbook().createCellStyle();
+                    newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
+                    styleMap.put(stHashCode, newCellStyle);
+                }
+                newCell.setCellStyle(newCellStyle);
+            }
+        }
+        switch (oldCell.getCellType()) {
+            case STRING:
+                newCell.setCellValue(oldCell.getStringCellValue());
+                break;
+            case NUMERIC:
+                newCell.setCellValue(oldCell.getNumericCellValue());
+                break;
+            case BLANK:
+                newCell.setCellType(null);
+                break;
+            case BOOLEAN:
+                newCell.setCellValue(oldCell.getBooleanCellValue());
+                break;
+            case ERROR:
+                newCell.setCellErrorValue(oldCell.getErrorCellValue());
+                break;
+            case FORMULA:
+                newCell.setCellFormula(oldCell.getCellFormula());
+                break;
+            default:
+                break;
+        }
+
     }
 
 }
