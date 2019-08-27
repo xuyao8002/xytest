@@ -160,4 +160,16 @@ public class ExcelUtils {
 
     }
 
+    public static void setDefaultStyle(){
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
+
+        sheet.setDefaultColumnWidth(15);
+        sheet.setDefaultRowHeightInPoints(20);
+
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+    }
+
 }
