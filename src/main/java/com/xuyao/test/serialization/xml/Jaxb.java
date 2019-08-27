@@ -3,12 +3,14 @@ package com.xuyao.test.serialization.xml;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 
 public class Jaxb {
@@ -103,7 +105,27 @@ public class Jaxb {
 }
 
     @Test
-    public void test() throws Exception {
+    public void marshaller() throws Exception {
+        JAXBContext jc = JAXBContext.newInstance(Root.class);
+        Marshaller marshaller = jc.createMarshaller();
+        Root root = new Root();
+        Common common = new Common();
+        common.setDateTime("2019-08-19");
+        root.setCommon(common);
+
+        Out out = new Out();
+        Detail detail = new Detail();
+        detail.setResultStatus("1");
+        out.setDetail(detail);
+        root.setOut(out);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        marshaller.marshal(root, outputStream);
+        System.out.println(outputStream.toString());
+
+    }
+
+    @Test
+    public void unmarshaller() throws Exception {
 
         String xmlStr = "<?xml version=\"1.0\" encoding = \"UTF-8\"?>\n" +
         "<ROOT>\n" +
