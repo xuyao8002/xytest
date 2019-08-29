@@ -28,5 +28,21 @@ public class BigDecimalTest {
         System.out.println(b.compareTo(b1));
         System.out.println(b.equals(b1));
     }
+
+    public static String formatRoundHalfUp(BigDecimal bigDecimal){
+        return formatRoundHalfUp(bigDecimal, 2);
+    }
+
+    public static String formatRoundHalfUp(BigDecimal bigDecimal, int scale) {
+        return bigDecimal == null ? "" : roundHalfUp(bigDecimal, scale).toString();
+    }
+
+    public static BigDecimal roundHalfUp(BigDecimal bigDecimal, int scale){
+        return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public static BigDecimal roundHalfUp(BigDecimal bigDecimal){
+        return roundHalfUp(bigDecimal, 2);
+    }
 }
 
