@@ -117,6 +117,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!--ZooKeeper分布式锁-->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>xytest</finalName>
