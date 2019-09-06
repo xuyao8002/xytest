@@ -34,7 +34,7 @@ public class BigDecimalTest {
     }
 
     public static String formatRoundHalfUp(BigDecimal bigDecimal, int scale) {
-        return bigDecimal == null ? "" : roundHalfUp(bigDecimal, scale).toString();
+        return bigDecimal == null ? "" : roundHalfUp(bigDecimal, scale).toPlainString();
     }
 
     public static BigDecimal roundHalfUp(BigDecimal bigDecimal, int scale){
