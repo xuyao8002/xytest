@@ -16,7 +16,7 @@ public class MutexLock {
 
     private int secondsToExpire = 1000;
 
-    private String host = "10.99.44.141";
+    private String host = "192.168.1.167";
 
     private int port = 6379;
 
