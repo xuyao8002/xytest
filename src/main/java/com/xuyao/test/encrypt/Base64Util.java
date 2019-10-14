@@ -1,4 +1,4 @@
-package com.xuyao.test.encrypt.base64;
+package com.xuyao.test.encrypt;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;

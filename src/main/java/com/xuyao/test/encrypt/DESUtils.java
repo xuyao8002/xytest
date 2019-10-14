@@ -1,4 +1,4 @@
-package com.xuyao.test.encrypt.md5;
+package com.xuyao.test.encrypt;
 
 
 import org.apache.commons.codec.binary.Base64;
@@ -7,12 +7,20 @@ import org.apache.commons.codec.digest.DigestUtils;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
 
 public class DESUtils {
 
+    private static final String CHARSET = "UTF-8";
+
     public static byte[] hex(String key){
         String f = DigestUtils.md5Hex(key);
-        byte[] bkeys = new String(f).getBytes();
+        byte[] bkeys = new byte[0];
+        try {
+            bkeys = new String(f).getBytes(CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         byte[] enk = new byte[24];
         for (int i=0;i<24;i++){
             enk[i] = bkeys[i];
@@ -22,7 +30,12 @@ public class DESUtils {
 
     public static String  encode3Des(String key,String srcStr){
         byte[] keybyte = hex(key);
-        byte[] src = srcStr.getBytes();
+        byte[] src = new byte[0];
+        try {
+            src = srcStr.getBytes(CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         try {
             //生成密钥
             SecretKey deskey = new SecretKeySpec(keybyte, "DESede");
@@ -32,7 +45,6 @@ public class DESUtils {
             String pwd = Base64.encodeBase64String(c1.doFinal(src));
             return pwd;
         } catch (java.security.NoSuchAlgorithmException e1) {
-            // TODO: handle exception
             e1.printStackTrace();
         }catch(javax.crypto.NoSuchPaddingException e2){
             e2.printStackTrace();
@@ -52,10 +64,9 @@ public class DESUtils {
             //解密
             Cipher c1 = Cipher.getInstance("DESede");
             c1.init(Cipher.DECRYPT_MODE, deskey);
-            String pwd = new String(c1.doFinal(src));
+            String pwd = new String(c1.doFinal(src), CHARSET);
             return pwd;
         } catch (java.security.NoSuchAlgorithmException e1) {
-            // TODO: handle exception
             e1.printStackTrace();
         }catch(javax.crypto.NoSuchPaddingException e2){
             e2.printStackTrace();
@@ -63,15 +74,6 @@ public class DESUtils {
             e3.printStackTrace();
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        String name = "kitty";
-        String key = "hello";
-        System.out.println(name);
-        String s = encode3Des(key, name);
-        System.out.println(s);
-        System.out.println(decode3Des(key, s));
     }
 
 }

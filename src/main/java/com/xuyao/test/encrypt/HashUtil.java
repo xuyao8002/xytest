@@ -1,4 +1,4 @@
-package com.xuyao.test.encrypt.hash;
+package com.xuyao.test.encrypt;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;

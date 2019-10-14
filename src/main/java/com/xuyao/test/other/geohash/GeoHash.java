@@ -1,4 +1,4 @@
-package com.xuyao.test.encrypt.geohash;
+package com.xuyao.test.other.geohash;
 
 import java.util.BitSet;
 import java.util.HashMap;
