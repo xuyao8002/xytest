@@ -1,4 +1,4 @@
-package com.xuyao.test.encrypt.rsa;
+package com.xuyao.test.encrypt;
 
 import javax.crypto.Cipher;
 import java.security.KeyFactory;
@@ -9,6 +9,8 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 public class RSAUtils {
+
+    private static final String CHARSET = "UTF-8";
 
     public static void main(String[] args) throws Exception {
 
@@ -33,7 +35,7 @@ public class RSAUtils {
     }
 
     public static PublicKey getPublicKey(String publicKeyStr) throws Exception{
-        byte[] keyBytes= Base64.getDecoder().decode(publicKeyStr.getBytes("UTF-8"));
+        byte[] keyBytes= Base64.getDecoder().decode(publicKeyStr.getBytes(CHARSET));
         X509EncodedKeySpec keySpec=new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory= KeyFactory.getInstance("RSA");
         return keyFactory.generatePublic(keySpec);
@@ -41,7 +43,7 @@ public class RSAUtils {
 
 
     public static PrivateKey getPrivateKey(String privateKeyStr) throws Exception{
-        byte[] keyBytes=Base64.getDecoder().decode(privateKeyStr.getBytes("UTF-8"));
+        byte[] keyBytes=Base64.getDecoder().decode(privateKeyStr.getBytes(CHARSET));
         PKCS8EncodedKeySpec keySpec=new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory=KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(keySpec);

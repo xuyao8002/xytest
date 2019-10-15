@@ -1,6 +1,6 @@
 package com.xuyao.test.other.bloomFilter;
 
-import com.xuyao.test.encrypt.hash.HashUtil;
+import com.xuyao.test.encrypt.HashUtil;
 
 import java.util.BitSet;
 
