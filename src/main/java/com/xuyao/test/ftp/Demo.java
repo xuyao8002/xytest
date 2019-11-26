@@ -1,4 +1,4 @@
-package com.xuyao.test.http.fileserver;
+package com.xuyao.test.ftp;
 
 
 
@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 
-public class Vsftpd {
+public class Demo {
 
     private String ip = "";
     private int port = 21;
@@ -24,21 +24,26 @@ public class Vsftpd {
 
     @Test
     public void test() throws IOException {
-        // 1. 创建一个FtpClient对象
         FTPClient ftpClient = new FTPClient();
-        // 2. 创建 ftp 连接
+        //创建连接
         ftpClient.connect(ip, port);
-        // 3. 登录 ftp 服务器
+        //登录服务器
         ftpClient.login(username, password);
-        // 4. 读取本地文件
+        //设置连接超时时间
+        ftpClient.setConnectTimeout(50000);
+        //设置字符编码
+        ftpClient.setControlEncoding("UTF-8");
+        //设置被动模式，由客户端连接服务器传输数据
+        ftpClient.enterLocalPassiveMode();
+        //读取本地文件
         FileInputStream inputStream = new FileInputStream(new File(filePath));
-        // 5. 设置上传的路径
+        //设置上传的路径
         ftpClient.changeWorkingDirectory(targetPath);
-        // 6. 修改上传文件的格式为二进制
+        //修改上传文件的格式为二进制
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        // 7. 服务器存储文件，第一个参数是存储在服务器的文件名，第二个参数是文件流
+        //服务器存储文件
         ftpClient.storeFile(targetName, inputStream);
-        // 8. 关闭连接
+        //关闭连接
         ftpClient.logout();
     }
 }
