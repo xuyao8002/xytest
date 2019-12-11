@@ -32,8 +32,13 @@ public class RSAUtils {
 
     }
 
-    private static String decrypt(String text, PrivateKey privateKey) throws Exception {
-        return new String(decrypt(Base64.getDecoder().decode(text), privateKey));
+    private static String decrypt(String content, PrivateKey privateKey) throws Exception {
+        return new String(decrypt(Base64.getDecoder().decode(content), privateKey));
+    }
+
+    public static byte[] decrypt(String content, String key) throws Exception{
+        PrivateKey privateKey = getPrivateKey(key);
+        return decrypt(Base64.getDecoder().decode(content), privateKey);
     }
 
     public static PublicKey getPublicKey(String publicKeyStr) throws Exception{
