@@ -30,21 +30,7 @@ public class Demo {
      * @throws IOException
      */
     private void uploadDirectory() throws IOException {
-        FTPClient ftpClient = new FTPClient();
-        //创建连接
-        ftpClient.connect(ip, port);
-        //登录服务器
-        ftpClient.login(username, password);
-        //设置连接超时时间
-        ftpClient.setConnectTimeout(50000);
-        //设置字符编码
-        ftpClient.setControlEncoding("UTF-8");
-        //设置被动模式，由客户端连接服务器传输数据
-        ftpClient.enterLocalPassiveMode();
-        //设置上传的路径
-        ftpClient.changeWorkingDirectory(targetPath);
-        //修改上传文件的格式为二进制
-        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+        FTPClient ftpClient = initFTPClient();
         //读取本地文件
         File dire = new File(filePath);
         File[] files = dire.listFiles();
@@ -63,6 +49,23 @@ public class Demo {
      * @throws IOException
      */
     private void uploadFile() throws IOException {
+        FTPClient ftpClient = initFTPClient();
+        File file = new File(filePath);
+        //读取本地文件
+        FileInputStream inputStream = new FileInputStream(file);
+        //服务器存储文件
+        String targetName = file.getName();
+        ftpClient.storeFile(targetName, inputStream);
+        //关闭连接
+        ftpClient.logout();
+    }
+
+    /**
+     * 初始FTPClient对象
+     * @return
+     * @throws IOException
+     */
+    private FTPClient initFTPClient() throws IOException {
         FTPClient ftpClient = new FTPClient();
         //创建连接
         ftpClient.connect(ip, port);
@@ -74,17 +77,10 @@ public class Demo {
         ftpClient.setControlEncoding("UTF-8");
         //设置被动模式，由客户端连接服务器传输数据
         ftpClient.enterLocalPassiveMode();
-        File file = new File(filePath);
-        //读取本地文件
-        FileInputStream inputStream = new FileInputStream(file);
         //设置上传的路径
         ftpClient.changeWorkingDirectory(targetPath);
         //修改上传文件的格式为二进制
         ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-        //服务器存储文件
-        String targetName = file.getName();
-        ftpClient.storeFile(targetName, inputStream);
-        //关闭连接
-        ftpClient.logout();
+        return ftpClient;
     }
 }
