@@ -16,7 +16,7 @@ public class SocketClient {
             socket = new Socket("localhost", 8080);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             Person person = new Person();
-            person.setName("xuyao 89");
+            person.setName("xuyao");
             outputStream.writeObject(person);
 
             ObjectInputStream dataInputStream = new ObjectInputStream(socket.getInputStream());
