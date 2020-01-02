@@ -1,4 +1,4 @@
-package com.xuyao.test.other.distributedLocks.redis;
+package com.xuyao.test.other.distributedlocks.redis;
 
 
 import org.junit.Test;

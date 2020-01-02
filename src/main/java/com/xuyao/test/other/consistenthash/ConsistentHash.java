@@ -1,4 +1,4 @@
-package com.xuyao.test.other.ConsistentHash;
+package com.xuyao.test.other.consistenthash;
 
 import java.util.SortedMap;
 import java.util.TreeMap;

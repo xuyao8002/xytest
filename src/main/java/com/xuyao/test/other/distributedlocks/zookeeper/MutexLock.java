@@ -1,4 +1,4 @@
-package com.xuyao.test.other.distributedLocks.zooKeeper;
+package com.xuyao.test.other.distributedlocks.zookeeper;
 
 
 import org.apache.curator.RetryPolicy;

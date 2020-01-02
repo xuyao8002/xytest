@@ -1,4 +1,4 @@
-package com.xuyao.test.other.bloomFilter;
+package com.xuyao.test.other.bloomfilter;
 
 import com.xuyao.test.encrypt.HashUtil;
 
