@@ -1,4 +1,4 @@
-package com.xuyao.test.http.rpc;
+package com.xuyao.test.http.rpc.transmission;
 
 
 import java.io.Serializable;
@@ -6,6 +6,8 @@ import java.io.Serializable;
 public class Person implements Serializable {
 
     private String name;
+
+    private int age;
 
     public String getName() {
         return name;
@@ -15,10 +17,19 @@ public class Person implements Serializable {
         this.name = name;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
                 "name='" + name + '\'' +
+                ", age=" + age +
                 '}';
     }
 }
