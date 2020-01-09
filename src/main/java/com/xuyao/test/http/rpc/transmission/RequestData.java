@@ -6,14 +6,29 @@ import java.util.Arrays;
 
 public class RequestData implements Serializable {
 
+    /**
+     * 方法名称
+     */
     private String methodName;
 
+    /**
+     * 方法参数类型
+     */
     private Class[] argsTypes;
 
+    /**
+     * 方法参数
+     */
     private Object[] args;
 
+    /**
+     * 服务名称
+     */
     private String serviceName;
 
+    /**
+     * 返回值类型
+     */
     private Class<?> returnType;
 
     public String getMethodName() {

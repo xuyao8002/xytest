@@ -5,9 +5,19 @@ import java.io.Serializable;
 
 public class Person implements Serializable {
 
+    private Integer id;
+
     private String name;
 
     private int age;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -28,7 +38,8 @@ public class Person implements Serializable {
     @Override
     public String toString() {
         return "Person{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", age=" + age +
                 '}';
     }

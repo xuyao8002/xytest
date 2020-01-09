@@ -1,8 +1,11 @@
 package com.xuyao.test.http.rpc;
 
+import com.xuyao.test.http.rpc.annotation.Consumer;
 import com.xuyao.test.http.rpc.service.IGreetService;
+import com.xuyao.test.http.rpc.service.IPersonService;
 import com.xuyao.test.http.rpc.transmission.Person;
 import com.xuyao.test.http.rpc.transmission.RequestData;
+import com.xuyao.test.http.rpc.transmission.SpecialValue;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -15,24 +18,30 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Objects;
+import java.util.concurrent.*;
 
 public class Client {
 
-    private static <T> T createJdkProxy(final Class<T> clazz) {
-        IGreetService jdkProxy = (IGreetService) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
-                new Class[] { IGreetService.class }, new Client.JdkHandler(clazz));
-        return (T)jdkProxy;
+    private static String serverHost = "localhost";
+    private static int serverPort = 8888;
+
+
+    private static <T> T getService(final Class<T> clazz) {
+        T jdkProxy = (T) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
+                new Class[] {clazz}, new requestHandler(clazz));
+        return jdkProxy;
     }
 
-    private static class JdkHandler<T> implements InvocationHandler {
+    private static class requestHandler<T> implements InvocationHandler {
 
         final Class<T> clazz;
-        private ExecutorService executorService = Executors.newFixedThreadPool(1);
-        JdkHandler(Class<T> clazz) {
+        int poolSize = Runtime.getRuntime().availableProcessors() * 2;
+        BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(10);
+        RejectedExecutionHandler policy = new ThreadPoolExecutor.AbortPolicy();
+        ExecutorService executorService = new ThreadPoolExecutor(poolSize, poolSize,
+                0, TimeUnit.SECONDS, queue, policy);
+        requestHandler(Class<T> clazz) {
             this.clazz = clazz;
         }
 
@@ -41,16 +50,15 @@ public class Client {
                 throws Throwable {
             RequestData requestData = new RequestData();
             requestData.setMethodName(method.getName());
-            requestData.setServiceName(clazz.getName());
+            Consumer consumer = clazz.getAnnotation(Consumer.class);
+            requestData.setServiceName(consumer.ref());
             requestData.setArgsTypes(method.getParameterTypes());
             requestData.setArgs(objects);
-            int port = 8080;
+            requestData.setReturnType(method.getReturnType());
             Client client = new Client();
             ClientHandler clientHandler = null;
             try {
-                if(clientHandler == null){
-                    clientHandler = client.connect(port, "localhost");
-                }
+                clientHandler = client.connect(serverPort, serverHost);
                 clientHandler.setRequestData(requestData);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -60,11 +68,20 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        IGreetService greetService = createJdkProxy(IGreetService.class);
+        IGreetService greetService = getService(IGreetService.class);
         Person tmp = new Person();
         tmp.setName("morning");
         String greeting = greetService.greeting(tmp);
         System.out.println("result: " + greeting);
+
+        IPersonService personService = getService(IPersonService.class);
+        Integer id = 11;
+        Person person = personService.get(id);
+        System.out.println("person: " + person);
+
+        id = 10;
+        person = personService.get(id);
+        System.out.println("person: " + person);
     }
 
     public ClientHandler connect(int port, String host) {
@@ -111,8 +128,10 @@ public class Client {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
-            Class<?> returnType = requestData.getReturnType();
-            if(returnType != void.class){
+            if(hasReturnType()){
+                if(Objects.equals(msg, SpecialValue.NULL)){
+                    msg = null;
+                }
                 result =  msg;
                 latch.countDown();
             }
@@ -126,8 +145,14 @@ public class Client {
         @Override
         public Object call() throws Exception {
             context.channel().writeAndFlush(requestData);
-            latch.await();
+            if(hasReturnType()){
+                latch.await();
+            }
             return result;
+        }
+
+        private boolean hasReturnType(){
+            return !Objects.equals(requestData.getReturnType(), void.class);
         }
     }
 
