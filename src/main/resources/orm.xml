@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasource>
+    <property name="driverClassName">com.mysql.cj.jdbc.Driver</property>
+    <property name="url">jdbc:mysql://localhost:3306/xuyao?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=UTF-8</property>
+    <property name="username">root</property>
+    <property name="password">root</property>
+</datasource>
