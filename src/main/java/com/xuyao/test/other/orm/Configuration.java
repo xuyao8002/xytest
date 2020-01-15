@@ -9,7 +9,9 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class Configuration {
 
@@ -39,28 +41,10 @@ public class Configuration {
 
     }
 
-    private DataSource initDataSource(String resourceName) throws DocumentException {
-        InputStream resourceAsStream = loader.getResourceAsStream(resourceName);
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(resourceAsStream);
-        Element rootElement = document.getRootElement();
-        Iterator<Element> elementIterator = rootElement.elementIterator();
-        DataSource dataSource = new DataSource();
-        while (elementIterator.hasNext()) {
-            Element next = elementIterator.next();
-            String name = next.attributeValue("name");
-            String value = next.getText();
-            if ("driverClassName".equals(name)) {
-                dataSource.setDriverClassName(value);
-            }else if("url".equals(name)){
-                dataSource.setUrl(value);
-            }else if("username".equals(name)){
-                dataSource.setUsername(value);
-            }else if("password".equals(name)){
-                dataSource.setPassword(value);
-            }
-        }
-        return dataSource;
+    private List<MapperInfo> loadMapperInfos(String resourcePath, String resourceSuffix) {
+        List<MapperInfo> mapperInfos = new ArrayList<>();
+
+        return mapperInfos;
     }
 
 

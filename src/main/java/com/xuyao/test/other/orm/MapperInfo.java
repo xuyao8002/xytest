@@ -1,24 +1,26 @@
 package com.xuyao.test.other.orm;
 
+import java.util.List;
+
 public class MapperInfo {
 
-    private String type;
+    private String namespace;
 
-    private String sql;
+    private List<StatementInfo> statementInfos;
 
-    public String getType() {
-        return type;
+    public String getNamespace() {
+        return namespace;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
-    public String getSql() {
-        return sql;
+    public List<StatementInfo> getStatementInfos() {
+        return statementInfos;
     }
 
-    public void setSql(String sql) {
-        this.sql = sql;
+    public void setStatementInfos(List<StatementInfo> statementInfos) {
+        this.statementInfos = statementInfos;
     }
 }
