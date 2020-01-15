@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.xuyao.test.other.orm.IUserDao">
+    <select id="getList" resultType="com.xuyao.test.other.orm.User">
+        SELECT
+          *
+        FROM
+          t_user
+    </select>
+</mapper>

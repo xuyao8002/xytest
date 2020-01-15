@@ -32,6 +32,13 @@ public class Configuration {
         return connection;
     }
 
+    public static void main(String[] args) throws DocumentException, SQLException, ClassNotFoundException {
+        Configuration configuration = new Configuration();
+        configuration.build("orm/orm.xml");
+        System.out.println(configuration.getConnection());
+
+    }
+
     private DataSource initDataSource(String resourceName) throws DocumentException {
         InputStream resourceAsStream = loader.getResourceAsStream(resourceName);
         SAXReader reader = new SAXReader();
@@ -56,10 +63,29 @@ public class Configuration {
         return dataSource;
     }
 
-    public static void main(String[] args) throws DocumentException, SQLException, ClassNotFoundException {
-        Configuration configuration = new Configuration();
-        configuration.build("orm.xml");
-        System.out.println(configuration.getConnection());
+
+    private DataSource initDataSource(String resourceName) throws DocumentException {
+        InputStream resourceAsStream = loader.getResourceAsStream(resourceName);
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(resourceAsStream);
+        Element rootElement = document.getRootElement();
+        Iterator<Element> elementIterator = rootElement.elementIterator();
+        DataSource dataSource = new DataSource();
+        while (elementIterator.hasNext()) {
+            Element next = elementIterator.next();
+            String name = next.attributeValue("name");
+            String value = next.getText();
+            if ("driverClassName".equals(name)) {
+                dataSource.setDriverClassName(value);
+            }else if("url".equals(name)){
+                dataSource.setUrl(value);
+            }else if("username".equals(name)){
+                dataSource.setUsername(value);
+            }else if("password".equals(name)){
+                dataSource.setPassword(value);
+            }
+        }
+        return dataSource;
     }
 
     private class DataSource{
