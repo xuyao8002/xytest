@@ -1,26 +1,43 @@
 package com.xuyao.test.other.orm;
 
-import java.util.List;
+import java.util.Map;
 
+/**
+ * 每个mapper文件解析出的信息
+ */
 public class MapperInfo {
 
-    private String namespace;
+    /**
+     * 由dao文件生成的代理类
+     */
+    private Object mapperProxy;
 
-    private List<StatementInfo> statementInfos;
+    /**
+     * 每段sql语句解析出的信息对象，key为id
+     */
+    private Map<String, StatementInfo> statementInfoMap;
 
-    public String getNamespace() {
-        return namespace;
+    public Object getMapperProxy() {
+        return mapperProxy;
     }
 
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    public void setMapperProxy(Object mapperProxy) {
+        this.mapperProxy = mapperProxy;
     }
 
-    public List<StatementInfo> getStatementInfos() {
-        return statementInfos;
+    public Map<String, StatementInfo> getStatementInfoMap() {
+        return statementInfoMap;
     }
 
-    public void setStatementInfos(List<StatementInfo> statementInfos) {
-        this.statementInfos = statementInfos;
+    public void setStatementInfoMap(Map<String, StatementInfo> statementInfoMap) {
+        this.statementInfoMap = statementInfoMap;
+    }
+
+    @Override
+    public String toString() {
+        return "MapperInfo{" +
+                "mapperProxy=" + mapperProxy +
+                ", statementInfoMap=" + statementInfoMap +
+                '}';
     }
 }

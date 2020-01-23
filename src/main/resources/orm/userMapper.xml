@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapper namespace="com.xuyao.test.other.orm.IUserDao">
-    <select id="getList" resultType="com.xuyao.test.other.orm.User">
+<mapper namespace="com.xuyao.test.other.orm.test.IUserDao">
+    <select id="getList" resultType="com.xuyao.test.other.orm.test.User">
         SELECT
-          *
+          id, name, phone
         FROM
           t_user
+        where 1=1
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+        order by id Desc
     </select>
+
+    <update id="update" resultType="java.lang.Integer">
+        update t_user set email = #{email}
+        where 1=1
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+    </update>
+
+    <insert id="insert" resultType="java.lang.Integer">
+        insert into t_user (name, username, password, gender, phone)
+        values
+        (
+            #{name},
+            #{username},
+            #{password},
+            #{gender},
+            #{phone}
+        )
+    </insert>
+
+    <delete id="delete" resultType="java.lang.Integer">
+        delete from t_user
+        where 1=1
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+    </delete>
 </mapper>

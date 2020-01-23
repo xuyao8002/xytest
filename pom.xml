@@ -186,6 +186,13 @@
 			<version>2.1.1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/ognl/ognl -->
+		<dependency>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>3.2.12</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>xytest</finalName>
