@@ -40,4 +40,19 @@ public class RegexUtils {
         return result;
     }
 
+    /**
+     * 替换字符串中内容；提取内容
+     * @param args
+     */
+    public static void main(String[] args) {
+        String sql = "select * from user where id = #{id} and name = #{name}";
+        System.out.println(sql.replaceAll("#\\{\\w+}", "?"));
+
+        Pattern pattern = Pattern.compile("(?<=#\\{)\\w+(?=})");
+        Matcher matcher = pattern.matcher(sql);
+        while (matcher.find()) {
+            System.out.println(matcher.group());
+        }
+    }
+
 }
