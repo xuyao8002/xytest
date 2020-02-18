@@ -4,16 +4,32 @@ public class QuickSort extends BaseSort{
 
 	@Override
 	public void sort() {
-		// TODO Auto-generated method stub
-		quickSort(arr);
+		quickSort(arr, 0, arr.length - 1);
 	}
 	
-	public void quickSort(int[] arr){
-		int i = 0, j = arr.length -1, temp = arr[0];
+	public void quickSort(int[] arr, int head, int tail){
+		if(head >= tail || arr == null || arr.length == 1){
+			return;
+		}
+		int i = head, j = tail, temp = arr[(head + tail) / 2];
 		while(i <= j){
-			while(arr[i] > temp){
-				
+			while(arr[i] < temp){
+				i++;
+			}
+			while(arr[j] > temp){
+				j--;
+			}
+			if(i < j){
+				int tmp = arr[i];;
+				arr[i] = arr[j];
+				arr[j] = tmp;
+				i++;
+				j--;
+			}else if(i == j){
+				i++;
 			}
 		}
+		quickSort(arr, head, j);
+		quickSort(arr, i, tail);
 	}
 }
