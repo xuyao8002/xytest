@@ -1,5 +1,8 @@
 package com.xuyao.test.http.rpc.transmission;
 
+/**
+ * 处理null值
+ */
 public enum SpecialValue {
 
     NULL("null", "null");

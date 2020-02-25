@@ -29,11 +29,11 @@ public class Client {
 
     private static <T> T getService(final Class<T> clazz) {
         T jdkProxy = (T) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
-                new Class[] {clazz}, new requestHandler(clazz));
+                new Class[] {clazz}, new RequestHandler(clazz));
         return jdkProxy;
     }
 
-    private static class requestHandler<T> implements InvocationHandler {
+    private static class RequestHandler<T> implements InvocationHandler {
 
         final Class<T> clazz;
         int poolSize = Runtime.getRuntime().availableProcessors() * 2;
@@ -41,7 +41,7 @@ public class Client {
         RejectedExecutionHandler policy = new ThreadPoolExecutor.AbortPolicy();
         ExecutorService executorService = new ThreadPoolExecutor(poolSize, poolSize,
                 0, TimeUnit.SECONDS, queue, policy);
-        requestHandler(Class<T> clazz) {
+        RequestHandler(Class<T> clazz) {
             this.clazz = clazz;
         }
 
@@ -65,23 +65,6 @@ public class Client {
             }
             return executorService.submit(clientHandler).get();
         }
-    }
-
-    public static void main(String[] args) {
-        IGreetService greetService = getService(IGreetService.class);
-        Person tmp = new Person();
-        tmp.setName("morning");
-        String greeting = greetService.greeting(tmp);
-        System.out.println("result: " + greeting);
-
-        IPersonService personService = getService(IPersonService.class);
-        Integer id = 11;
-        Person person = personService.get(id);
-        System.out.println("person: " + person);
-
-        id = 10;
-        person = personService.get(id);
-        System.out.println("person: " + person);
     }
 
     public ClientHandler connect(int port, String host) {
@@ -113,7 +96,7 @@ public class Client {
         private Object result;
         private RequestData requestData;
         private ChannelHandlerContext context;
-        private CountDownLatch latch;
+        private CountDownLatch serverResponseLatch;
 
         public void setRequestData(RequestData requestData){
             this.requestData = requestData;
@@ -121,19 +104,20 @@ public class Client {
 
         @Override
         public void channelActive(ChannelHandlerContext ctx) {
-            latch = new CountDownLatch(1);
+            serverResponseLatch = new CountDownLatch(1);
             context = ctx;
 
         }
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
+            //读取服务端返回值
             if(hasReturnType()){
                 if(Objects.equals(msg, SpecialValue.NULL)){
                     msg = null;
                 }
                 result =  msg;
-                latch.countDown();
+                serverResponseLatch.countDown();
             }
         }
 
@@ -144,9 +128,11 @@ public class Client {
 
         @Override
         public Object call() throws Exception {
+            //发送请求数据
             context.channel().writeAndFlush(requestData);
+            //若请求方法有返回值，等待服务端返回数据
             if(hasReturnType()){
-                latch.await();
+                serverResponseLatch.await();
             }
             return result;
         }
@@ -154,6 +140,23 @@ public class Client {
         private boolean hasReturnType(){
             return !Objects.equals(requestData.getReturnType(), void.class);
         }
+    }
+
+    public static void main(String[] args) {
+        IGreetService greetService = getService(IGreetService.class);
+        Person tmp = new Person();
+        tmp.setName("morning");
+        String greeting = greetService.greeting(tmp);
+        System.out.println("result: " + greeting);
+
+        IPersonService personService = getService(IPersonService.class);
+        Integer id = 11;
+        Person person = personService.get(id);
+        System.out.println("person: " + person);
+
+        id = 10;
+        person = personService.get(id);
+        System.out.println("person: " + person);
     }
 
 }

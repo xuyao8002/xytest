@@ -26,6 +26,7 @@ public class Server {
 
     private static Map<String, Object> nameInstanceMap = new HashMap<>();
 
+    private static ClassLoader loader = ClassLoader.getSystemClassLoader();
 
     public void bind(int port) {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -52,11 +53,12 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        initNameInstanceMap();
-        new Server().bind(port);
-    }
-
+    /**
+     * 加载指定包下的类
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     private static void initNameInstanceMap() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         String packageName = "com.xuyao.test.http.rpc.service.impl";
         URL resource = Server.class.getResource("/"+packageName.replace(".", "/"));
@@ -65,16 +67,11 @@ public class Server {
             File files = new File(filePath);
             if(files != null){
                 String[] fileNames = files.list();
-                ClassLoader classLoader = new ClassLoader() {
-                    @Override
-                    public Class<?> loadClass(String name) throws ClassNotFoundException {
-                        return super.loadClass(name);
-                    }
-                };
+
                 String className;
                 for (String fileName : fileNames) {
                     className = packageName + "." + fileName.substring(0, fileName.lastIndexOf("."));
-                    Class<?> serviceClass = classLoader.loadClass(className);
+                    Class<?> serviceClass = loader.loadClass(className);
                     if(serviceClass != null){
                         Producer producer = serviceClass.getAnnotation(Producer.class);
                         String name;
@@ -92,6 +89,7 @@ public class Server {
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
             try{
+                //读取客户端请求数据
                 RequestData requestData = (RequestData) msg;
                 System.out.println("接收：" + requestData);
                 String methodName = requestData.getMethodName();
@@ -100,11 +98,14 @@ public class Server {
                 Object[] args = requestData.getArgs();
                 Object service = nameInstanceMap.get(serviceName);
                 Method method = service.getClass().getMethod(methodName, argsTypes);
+                //执行方法
+                Object invoke = method.invoke(service, args);
                 if(method.getReturnType() != void.class){
-                    Object invoke = method.invoke(service, args);
+                    //处理null值
                     if(Objects.equals(invoke, null)){
                         invoke = SpecialValue.NULL;
                     }
+                    //回写客户端，返回结果
                     ctx.channel().writeAndFlush(invoke);
                 }
             }catch (Exception e){
@@ -121,6 +122,12 @@ public class Server {
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             ctx.close();
         }
+    }
+
+
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        initNameInstanceMap();
+        new Server().bind(port);
     }
 
 }
