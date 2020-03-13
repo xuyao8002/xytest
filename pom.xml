@@ -192,7 +192,12 @@
 			<artifactId>ognl</artifactId>
 			<version>3.2.12</version>
 		</dependency>
-
+		<!--二维码生成-->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.4.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>xytest</finalName>
