@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xuyao</groupId>
 	<artifactId>xytest</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>xytest Maven Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -209,6 +209,22 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<extdirs>libs</extdirs>
+						<verbose/>
+						<bootclasspath>C:/software/java32/jdk1.8.0_131/jre/lib/rt.jar;C:/software/java32/jdk1.8.0_131/jre/lib/jce.jar;C:/software/java32/jdk1.8.0_131/jre/lib/jsse.jar</bootclasspath>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+<!--			指定MANIFEST.MF-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
