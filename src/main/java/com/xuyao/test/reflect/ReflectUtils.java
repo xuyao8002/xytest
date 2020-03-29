@@ -1,20 +1,54 @@
 package com.xuyao.test.reflect;
 
+import com.esotericsoftware.reflectasm.MethodAccess;
 import com.xuyao.test.Person;
 import com.xuyao.test.annotation.FieldAnno;
 import com.xuyao.test.annotation.TestAnno;
 import com.xuyao.test.annotation.TypeAnno;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.Map;
 
 public class ReflectUtils {
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
 
+    /**
+     * 获取对象属性，耗时排序，getByReflectAsmIndex < getByReflect < getByReflectAsm
+     */
+    public static <T> T getByReflectAsmIndex(Object object, String getMethod){
+        MethodAccess methodAccess = MethodAccess.get(object.getClass());
+        int index = methodAccess.getIndex(getMethod);
+        return (T) methodAccess.invoke(object, index);
+    }
+
+    public static <T> T getByReflect(Object object, String getMethod) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method declaredMethod = object.getClass().getDeclaredMethod(getMethod);
+        return (T) declaredMethod.invoke(object);
+    }
+
+    public static <T> T getByReflectAsm(Object object, String getMethod){
+        MethodAccess methodAccess = MethodAccess.get(object.getClass());
+        return (T) methodAccess.invoke(object, getMethod);
+    }
+
+
+    public static <T> T getByProperty(Object object, String field) throws InvocationTargetException, IllegalAccessException, IntrospectionException {
+        BeanInfo beanInfo = Introspector.getBeanInfo(Person.class);
+        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            if (propertyDescriptor.getName().equals(field)) {
+                Method readMethod = propertyDescriptor.getReadMethod();
+                return (T) readMethod.invoke(object);
+            }
+        }
+        return null;
+    }
+
+    private static void changeAnnoValTest() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
         Class<Person> personClass = Person.class;
         TypeAnno annotation = personClass.getAnnotation(TypeAnno.class);
         System.out.println("before: " + annotation.name());
