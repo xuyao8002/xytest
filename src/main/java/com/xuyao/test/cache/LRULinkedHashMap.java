@@ -3,7 +3,7 @@ package com.xuyao.test.cache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class LRULinkedHashMap extends LinkedHashMap {
+public class LRULinkedHashMap<K,V> extends LinkedHashMap<K,V> {
 
     private int capacity;
 
