@@ -13,6 +13,6 @@ public class LRULinkedHashMap<K,V> extends LinkedHashMap<K,V> {
 
     @Override
     protected boolean removeEldestEntry(Map.Entry eldest) {
-        return super.values().size() > capacity;
+        return size() > capacity;
     }
 }
