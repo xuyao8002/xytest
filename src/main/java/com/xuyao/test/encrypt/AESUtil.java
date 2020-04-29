@@ -28,6 +28,7 @@ public class AESUtil {
         byte[] b = cipher.doFinal(content.getBytes(CHARSET_NAME));
         // base64编码,避免乱码
         return Base64.encodeBase64String(b);
+//        return Base64.encodeBase64URLSafeString(b);
     }
 
     /**
