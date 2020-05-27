@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateTimeUtils {
@@ -86,9 +87,20 @@ public class DateTimeUtils {
     }
 
     /**
+     * 返回指定日期对应的最早时间
+     * @param date
+     * @return yyyy-MM-dd 00:00:00 000
+     */
+    public static Date getStartOfDay(Date date) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
+        return Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
      * 返回指定日期对应的最晚时间
      * @param date
-     * @return
+     * @return yyyy-MM-dd 23:59:59 999
      */
     public static Date getEndOfDay(Date date) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());;
@@ -99,12 +111,45 @@ public class DateTimeUtils {
     /**
      * 返回指定日期对应的最早时间
      * @param date
+     * @return yyyy-MM-dd 00:00:00 000
+     */
+    public static Date getStartOfDay1(Date date){
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 00);
+        cal.set(Calendar.MINUTE, 00);
+        cal.set(Calendar.SECOND, 00);
+        cal.set(Calendar.MILLISECOND, 000);
+        return cal.getTime();
+    }
+
+    /**
+     * 返回指定日期对应的最晚时间
+     * @param date
+     * @return yyyy-MM-dd 23:59:59 999
+     */
+    public static Date getEndOfDay1(Date date){
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTime();
+    }
+
+    /**
+     * 返回指定日期某个字段加上指定值后的值
+     * @param date
+     * @param field Calendar字段
+     * @param value 正加负减
      * @return
      */
-    public static Date getStartOfDay(Date date) {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
-        LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
-        return Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    public static Date add(Date date, int field, int value){
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(field, value);
+        return cal.getTime();
     }
 
 }
