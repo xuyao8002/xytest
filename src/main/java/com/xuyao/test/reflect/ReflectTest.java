@@ -1,10 +1,6 @@
 package com.xuyao.test.reflect;
 
-import com.xuyao.test.SampleSub;
-
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 public class ReflectTest {
 	
@@ -15,7 +11,7 @@ public class ReflectTest {
 
 
     public static void readFields(){
-        Class<SampleSub> sub = SampleSub.class;
+        Class<Object> sub = Object.class;
         //获取当前类中所有字段，访问权限：public、protected、default、private
         Field[] declaredFields = sub.getDeclaredFields();
         for (Field declaredField : declaredFields) {
