@@ -86,6 +86,7 @@ public class ExcelUtils {
                 break;
             case STRING: // 字符串
                 cellValue = cell.getStringCellValue();
+                cellValue = cellValue != null ? cellValue.trim().replace("\n", ""): cellValue;
                 break;
             case BOOLEAN: // Boolean
                 cellValue = String.valueOf(cell.getBooleanCellValue());
