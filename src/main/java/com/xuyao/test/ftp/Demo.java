@@ -1,13 +1,14 @@
 package com.xuyao.test.ftp;
 
 
-
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 
@@ -17,12 +18,18 @@ public class Demo {
     private int port = 21;
     private String username = "";
     private String password = "";
+    //本地文件
     private String filePath = "";
+    //远程文件
     private String targetPath = "";
+
+    private FTPClient ftpClient;
 
     @Test
     public void test() throws IOException {
-        uploadDirectory();
+        ftpClient = initFTPClient();
+//        uploadDirectory();
+        downloadFile();
     }
 
     /**
@@ -30,7 +37,6 @@ public class Demo {
      * @throws IOException
      */
     private void uploadDirectory() throws IOException {
-        FTPClient ftpClient = initFTPClient();
         //读取本地文件
         File dire = new File(filePath);
         File[] files = dire.listFiles();
@@ -49,13 +55,39 @@ public class Demo {
      * @throws IOException
      */
     private void uploadFile() throws IOException {
-        FTPClient ftpClient = initFTPClient();
         File file = new File(filePath);
         //读取本地文件
         FileInputStream inputStream = new FileInputStream(file);
         //服务器存储文件
         String targetName = file.getName();
         ftpClient.storeFile(targetName, inputStream);
+        //关闭连接
+        ftpClient.logout();
+    }
+
+    /**
+     * 下载文件夹下文件
+     * @throws IOException
+     */
+    private void downloadDirectory() throws IOException {
+        FTPFile[] ftpFiles = ftpClient.listFiles(targetPath);
+        if(ftpFiles != null && ftpFiles.length > 0){
+            for (FTPFile ftpFile : ftpFiles) {
+                boolean result = ftpClient.retrieveFile(targetPath + ftpFile.getName(), new FileOutputStream(new File(filePath + ftpFile.getName())));
+                System.out.println(String.format("文件名称：%s，下载结果：%s", ftpFile.getName(), result ? "成功" : "失败"));
+            }
+        }
+        //关闭连接
+        ftpClient.logout();
+    }
+
+    /**
+     * 下载文件
+     * @throws IOException
+     */
+    private void downloadFile() throws IOException {
+        boolean result = ftpClient.retrieveFile(targetPath, new FileOutputStream(new File(filePath + targetPath.substring(targetPath.lastIndexOf("/")))));
+        System.out.println(String.format("文件名称：%s，下载结果：%s", targetPath.substring(targetPath.lastIndexOf("/")), result ? "成功" : "失败"));
         //关闭连接
         ftpClient.logout();
     }
