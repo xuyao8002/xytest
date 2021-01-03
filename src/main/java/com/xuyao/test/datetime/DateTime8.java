@@ -1,6 +1,7 @@
 package com.xuyao.test.datetime;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -78,8 +79,6 @@ public class DateTime8 {
 //        System.out.println("间隔的纳秒数:" + duration.get(ChronoUnit.NANOS));
 
 
-
-
     }
     public static Date getEndOfDay(Date date) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());;
@@ -92,4 +91,13 @@ public class DateTime8 {
         LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
         return Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
     }
+
+    public static LocalDateTime getStartOfDay(LocalDate localDate) {
+        return localDate.atTime(LocalTime.MIN);
+    }
+
+    public static LocalDateTime getEndOfDay(LocalDate localDate) {
+        return localDate.atTime(LocalTime.MAX);
+    }
+
 }
