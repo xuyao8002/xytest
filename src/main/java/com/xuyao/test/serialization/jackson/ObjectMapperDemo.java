@@ -14,17 +14,9 @@ public class ObjectMapperDemo {
         person.setAge(88);
 
         ObjectMapper jsonMapper = new JsonMapper();
-        // String stringVal = jsonMapper.writeValueAsString(person);
-        // System.out.println("object to jsonString: " + stringVal);
-        // Person readValue = jsonMapper.readValue(stringVal, Person.class);
-        // System.out.println("jsonString to object: " + readValue);
-            conversion(jsonMapper, person);
+        conversion(jsonMapper, person);
 
         ObjectMapper xmlMapper = new XmlMapper();
-        // String s1 = xmlMapper.writeValueAsString(person);
-        // System.out.println(s1);
-        // Person person2 = xmlMapper.readValue(s1, Person.class);
-        // System.out.println("p2: " + person2);
         conversion(xmlMapper, person);
     }
 
