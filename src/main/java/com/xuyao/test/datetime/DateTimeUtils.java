@@ -152,4 +152,13 @@ public class DateTimeUtils {
         return cal.getTime();
     }
 
+    /**
+     * 当前到下一天的持续时间
+     * @return
+     */
+    public static Duration durationToNextDay(){
+        LocalDateTime nextMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1);
+        return Duration.between(LocalDateTime.now(), nextMidnight);
+    }
+
 }
