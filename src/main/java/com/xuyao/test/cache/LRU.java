@@ -4,55 +4,38 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-class LRU {
+public class LRU<K, V> {
 
-    private Map<Integer, Node> map = new HashMap<>();
-    LinkedList<Node> linkedList = new LinkedList();
     private int capacity;
+    private Map<K, V> map = new HashMap<>();
+    private LinkedList<K> list = new LinkedList<>();
 
     public LRU(int capacity) {
         this.capacity = capacity;
     }
-    
-    public int get(int key) {
-        if(!map.containsKey(key)){
-            return -1;
-        }else{
-            int val = map.get(key).getVal();
-            put(key, val);
-            return val;
-        }
-    }
-    
-    public void put(int key, int value) {
-        Node node = new Node(key, value);
+
+    public void put(K key, V value){
         if (map.containsKey(key)) {
-            linkedList.remove(map.get(key));
-            linkedList.addFirst(node);
-            map.put(key, node);
+            list.remove(key);
         }else{
-            if(linkedList.size() == capacity){
-                Node node1 = linkedList.removeLast();
-                map.remove(node1.getKey());
+            if (list.size() == capacity) {
+                K k = list.removeLast();
+                map.remove(k);
             }
-            linkedList.addFirst(node);
-            map.put(key, node);
         }
+        list.addFirst(key);
+        map.put(key, value);
     }
 
-    class Node {
-        private int key;
-        private int val;
-        public Node(int key, int val) {
-            this.key = key;
-            this.val = val;
+    public V get(K key){
+        V v;
+        if (!map.containsKey(key)) {
+            return null;
+        }else{
+            v = map.get(key);
+            put(key, v);
         }
-        public int getKey() {
-            return key;
-        }
-        public int getVal() {
-            return val;
-        }
+        return v;
     }
 
 }
