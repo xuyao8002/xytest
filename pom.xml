@@ -230,6 +230,12 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.12.1</version>
 		</dependency>
+		<!--图片相似度-->
+		<dependency>
+			<groupId>com.github.kilianB</groupId>
+			<artifactId>JImageHash</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -246,7 +252,7 @@
 					<compilerArguments>
 						<extdirs>libs</extdirs>
 						<verbose/>
-						<bootclasspath>C:/software/java32/jdk1.8.0_131/jre/lib/rt.jar;C:/software/java32/jdk1.8.0_131/jre/lib/jce.jar;C:/software/java32/jdk1.8.0_131/jre/lib/jsse.jar</bootclasspath>
+						<bootclasspath>D:/software/Java/jdk1.8.0_271/jre/lib/rt.jar;D:/software/Java/jdk1.8.0_271/jre/lib/jce.jar;D:/software/Java/jdk1.8.0_271/jre/lib/jsse.jar</bootclasspath>
 					</compilerArguments>
 				</configuration>
 			</plugin>

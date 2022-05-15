@@ -33,9 +33,9 @@ public class SocketServer {
         @Override
         public void run() {
             while(true){
-                try{
+                try {
                     System.out.println("接收：" + inputStream.readUTF() + " from " + socket.getInetAddress() + " / " + socket.getPort());
-                }catch (Exception e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -57,12 +57,13 @@ public class SocketServer {
         @Override
         public void run() {
             while(true){
-                try{
+                try {
                     dataOutputStream.writeUTF(bufferedReader.readLine());
-                }catch (Exception e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+
         }
     }
 

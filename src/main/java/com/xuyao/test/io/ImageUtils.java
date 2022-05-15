@@ -1,5 +1,11 @@
 package com.xuyao.test.io;
 
+import com.github.kilianB.hash.Hash;
+import com.github.kilianB.hashAlgorithms.AverageHash;
+import com.github.kilianB.hashAlgorithms.HashingAlgorithm;
+import com.github.kilianB.hashAlgorithms.PerceptiveHash;
+import com.github.kilianB.matcher.exotic.SingleImageMatcher;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -41,6 +47,28 @@ public class ImageUtils {
             e.printStackTrace();
         }
         return flag;
+    }
+
+    public static boolean checkSimilarity(String url, String url1){
+        try{
+            BufferedImage img = ImageIO.read(new URL(url));
+            BufferedImage img1 = ImageIO.read(new URL(url1));
+            HashingAlgorithm hasher = new PerceptiveHash(32);
+            Hash hash = hasher.hash(img);
+            Hash hash1 = hasher.hash(img1);
+            double similarityScore = hash.normalizedHammingDistance(hash1);
+            if(similarityScore < .2) {
+                return true;
+            }
+            //Chaining multiple matcher for single image comparison
+            SingleImageMatcher matcher = new SingleImageMatcher();
+            matcher.addHashingAlgorithm(new AverageHash(64),.3);
+            matcher.addHashingAlgorithm(new PerceptiveHash(32),.2);
+            return matcher.checkSimilarity(img,img1);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
