@@ -40,11 +40,9 @@ public class SocketClient {
     }
 
     static class WriteThread implements Runnable{
-        private Socket socket;
         private DataOutputStream outputStream;
         private BufferedReader bufferedReader;
         public WriteThread(Socket socket) throws IOException {
-            this.socket = socket;
             outputStream = new DataOutputStream(socket.getOutputStream());
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         }

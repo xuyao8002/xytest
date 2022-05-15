@@ -1,7 +1,5 @@
 package com.xuyao.test.http.socket;
 
-import lombok.SneakyThrows;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -32,11 +30,14 @@ public class SocketServer {
 
         }
 
-        @SneakyThrows
         @Override
         public void run() {
             while(true){
-                System.out.println("接收：" + inputStream.readUTF() + " from " + socket.getInetAddress() + " / " + socket.getPort());
+                try{
+                    System.out.println("接收：" + inputStream.readUTF() + " from " + socket.getInetAddress() + " / " + socket.getPort());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -53,13 +54,15 @@ public class SocketServer {
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         }
 
-        @SneakyThrows
         @Override
         public void run() {
             while(true){
-                dataOutputStream.writeUTF(bufferedReader.readLine());
+                try{
+                    dataOutputStream.writeUTF(bufferedReader.readLine());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
-
         }
     }
 
