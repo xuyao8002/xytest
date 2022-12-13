@@ -1,5 +1,6 @@
 package com.xuyao.test.function;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
@@ -31,6 +32,14 @@ public class StreamTest {
         //list转map，重复key时新值覆盖旧值
         Map<Object, Map<String, Object>> map2 = list.stream().collect(Collectors.toMap(m -> m.get("name"), m -> m, (k1, k2) -> k2));
         System.out.println(map2);
+
+    }
+
+    private static void sum() {
+        List<BigDecimal> decimals = new ArrayList<>();
+        decimals.add(new BigDecimal("0.01"));
+        decimals.add(new BigDecimal("0.99"));
+        System.out.println(decimals.stream().reduce(BigDecimal.ZERO, BigDecimal::add));
     }
 
     private static void parallel() {
