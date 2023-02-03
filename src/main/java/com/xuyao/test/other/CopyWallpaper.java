@@ -11,8 +11,18 @@ import java.nio.channels.FileChannel;
 public class CopyWallpaper {
 
     public static void main(String[] args) throws IOException {
-        String path = "C:\\Users\\xuyao\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets";
-        String output = "C:\\Users\\xuyao\\Desktop";
+        String userPath = "C:\\Users\\xuyao\\";
+        File user = new File(userPath);
+        if (!user.exists()) {
+            userPath = "C:\\Users\\Administrator\\";
+            user = new File(userPath);
+            if (!user.exists()) {
+                System.err.println("未找到用户");
+                return;
+            }
+        }
+        String path = userPath + "AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets";
+        String output = userPath + "Desktop";
         File folder = new File(path);
         if(folder.isDirectory()){
             File[] files = folder.listFiles();
