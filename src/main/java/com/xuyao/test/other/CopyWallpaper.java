@@ -11,14 +11,13 @@ import java.nio.channels.FileChannel;
 public class CopyWallpaper {
 
     public static void main(String[] args) throws IOException {
-        String userPath = "C:\\Users\\xuyao\\";
-        File user = new File(userPath);
-        if (!user.exists()) {
-            userPath = "C:\\Users\\Administrator\\";
-            user = new File(userPath);
-            if (!user.exists()) {
-                System.err.println("未找到用户");
-                return;
+        String[] paths = {"C:\\Users\\xuyao\\", "C:\\Users\\Administrator\\"};
+        String userPath = null;
+        for (String path : paths) {
+            File user = new File(path);
+            if (user.exists()) {
+                userPath = path;
+                break;
             }
         }
         String path = userPath + "AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets";
