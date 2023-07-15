@@ -3,6 +3,7 @@ package com.xuyao.test.function;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 public class StreamTest {
 
@@ -31,6 +32,19 @@ public class StreamTest {
         //list转map，重复key时新值覆盖旧值
         Map<Object, Map<String, Object>> map2 = list.stream().collect(Collectors.toMap(m -> m.get("name"), m -> m, (k1, k2) -> k2));
         System.out.println(map2);
+    }
+
+    public static void flatMap(String[] args) {
+        List<Integer> nums = new ArrayList<>();
+        nums.add(1);
+        nums.add(2);
+        nums.add(3);
+        List<Integer> nums1 = new ArrayList<>();
+        nums1.add(4);
+        nums1.add(5);
+        nums1.add(6);
+        List<Integer> mergedList = Stream.of(nums, nums1).flatMap(List::stream).collect(Collectors.toList());
+        System.out.println(mergedList);
     }
 
     private static void parallel() {
