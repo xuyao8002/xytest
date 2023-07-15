@@ -2,10 +2,51 @@ package com.xuyao.test.thread;
 
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class CompletableFutureTest {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+//        allOf();
+//        compose();
+        combine();
+    }
+
+    private static void combine() throws InterruptedException, ExecutionException {
+        CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            return "Hello";
+        });
+        CompletableFuture<String> f2 = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            return "World";
+        });
+        CompletableFuture<String> combine = f1.thenCombine(f2, (s, s2) -> s + " " + s2);
+        System.out.println(combine.get());
+    }
+
+    private static void compose() throws InterruptedException, ExecutionException {
+        CompletableFuture<String> compose = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            return "Hello";
+        }).thenCompose(hello -> CompletableFuture.supplyAsync(() -> hello + " World"));
+        System.out.println(compose.get());
+    }
+
+    private static void allOf() throws InterruptedException {
         CompletableFuture<Void> f = CompletableFuture.runAsync(() -> {
             try {
                 Thread.sleep(5000L);
@@ -35,8 +76,6 @@ public class CompletableFutureTest {
             System.out.println("wait: " + System.currentTimeMillis());
             Thread.sleep(1000L);
         }
-//        ff.get();
-        System.out.println("end");
     }
 
 }
