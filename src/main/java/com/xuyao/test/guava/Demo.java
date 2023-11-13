@@ -3,7 +3,13 @@ package com.xuyao.test.guava;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.*;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class Demo {
 
@@ -52,6 +58,21 @@ public class Demo {
         System.out.println(digit.retainFrom("3d,.&^*6"));
         System.out.println(digit.removeFrom("3d,.&^*6"));
 
+        //缓存中不存在的通过load方法填充
+        LoadingCache<String, String> lc = CacheBuilder
+        .newBuilder()
+        .expireAfterWrite(1, TimeUnit.SECONDS)
+        .build(new CacheLoader<String, String>() {
+            @Override
+            public String load(String key){
+                return "";
+            }}
+        );
+        try {
+            System.out.println(lc.get(""));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
