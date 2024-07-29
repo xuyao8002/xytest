@@ -54,6 +54,17 @@ public class StreamTest {
         nums1.add(6);
         List<Integer> mergedList = Stream.of(nums, nums1).flatMap(List::stream).collect(Collectors.toList());
         System.out.println(mergedList);
+
+        List<List<String>> list = new ArrayList<>();
+        list.add(Arrays.asList("1", "2", "3"));
+        list.add(Arrays.asList("8", "5", "6"));
+        List<String> stringList = list.stream().flatMap(e -> e.stream()).collect(Collectors.toList());
+        System.out.println(stringList);
+        List<Integer> integerList = list.stream().flatMapToInt(e -> e.stream()
+                .mapToInt(Integer::parseInt)).boxed().collect(Collectors.toList());
+        System.out.println(integerList);
+
+
     }
 
     private static void parallel() {
