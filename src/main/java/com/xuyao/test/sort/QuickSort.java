@@ -11,25 +11,25 @@ public class QuickSort extends BaseSort{
 		if(head >= tail || arr == null || arr.length == 1){
 			return;
 		}
-		int i = head, j = tail, temp = arr[(head + tail) / 2];
-		while(i <= j){
-			while(arr[i] < temp){
-				i++;
+		int h = head;
+		int t = tail;
+		int temp = arr[(head + tail) / 2];
+		while(h <= t){
+			while(arr[h] < temp){
+				h++;
 			}
-			while(arr[j] > temp){
-				j--;
+			while(arr[t] > temp){
+				t--;
 			}
-			if(i < j){
-				int tmp = arr[i];;
-				arr[i] = arr[j];
-				arr[j] = tmp;
-				i++;
-				j--;
-			}else if(i == j){
-				i++;
+			if(h <= t){
+				int tmp = arr[h];;
+				arr[h] = arr[t];
+				arr[t] = tmp;
+				h++;
+				t--;
 			}
 		}
-		quickSort(arr, head, j);
-		quickSort(arr, i, tail);
+		quickSort(arr, head, t);
+		quickSort(arr, h, tail);
 	}
 }
